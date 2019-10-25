@@ -36,3 +36,31 @@ ggplot(data=x, aes(x=status_executado, y=total_obras, fill=situacao_da_obra)) +
 
 -------------
 
+
+### Pie plot 
+
+```{r}
+#Data frame
+df <- data.frame("atendimento" = c("Atendido", "Não Atendido", "Parcialmente Atendido"), 
+                 "total_pedidos" = c(351,106,66),
+                 "perc" = c("40 %", "12 %", "8 %"))
+
+#Plot
+
+mycols <- c("#ffa600", "#ff6361", "#bc5090", "#58508d")
+
+ggplot(df, aes(x="", y=total_pedidos, fill=atendimento)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = total_pedidos, label = perc), color = "black", 
+            position = position_stack(vjust = 0.6))+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  labs(fill = "Atendimento" , 
+       title = "Atendimento a pedidos feitos à universidades e institutos federais")
+
+```
+
+#### Result:
+
+![alt text](https://github.com/voigtjessica/tutoriais/blob/master/files/grf1.jpeg?raw=true)
