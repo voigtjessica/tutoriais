@@ -1,8 +1,8 @@
 ## Plots with ggplot2 R
 
-### Bar plot with labels and "fill"
-
 Here I describe some codes to remember how I made the plots.
+
+### Simple bar plot
 
 ```{r}
 df <- data.frame(situacao_da_obra = c(rep("Inacabada"), 4), rep("Paralisada", 4)), 
@@ -10,6 +10,33 @@ df <- data.frame(situacao_da_obra = c(rep("Inacabada"), 4), rep("Paralisada", 4)
                  "Entre 50% e 80%", "Acima de 80%", "Até 10%", "Entre 10% e 30%", "Entre 30% e 50%",
                  "Entre 50% e 80%"),
                  total_obras = c(57, 149, 195, 146, 175,  27,  99, 172, 124, 108))
+
+#Ploting:                 
+
+library(hrbrthemes)
+
+# Draw plot
+ggplot(atendimento, aes(x=atendimento, y=total_pedidos)) + 
+  geom_bar(stat="identity", width=.5, fill="grey") + 
+  labs(title="Atendimento", 
+       caption="fonte: Transparência Brasil") + theme_ipsum() +
+  geom_text(aes(y = total_pedidos, label = perc), color = "black", 
+            position = position_stack(vjust = 0.5)) +
+  theme(axis.text.x = element_text( vjust=0.6)) +
+  xlab("") +  ylab("Total pedidos")
+```
+
+#### Result:
+
+![alt text](https://github.com/voigtjessica/tutoriais/blob/master/files/grafico1%20-%20atendimento.jpeg?raw=true)
+
+
+### Bar plot with labels and "fill"
+
+```{r}
+df <- data.frame("atendimento" = c("Atendido", "Não Atendido", "Parcialmente Atendido"), 
+                 "total_pedidos" = c(351,106,66),
+                 "perc" = c("67%", "20%", "13%"))
                  
 df
 
