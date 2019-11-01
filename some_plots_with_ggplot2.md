@@ -91,3 +91,44 @@ ggplot(df, aes(x="", y=total_pedidos, fill=atendimento)) +
 #### Result:
 
 ![alt text](https://github.com/voigtjessica/tutoriais/blob/master/files/grf1.jpeg?raw=true)
+
+
+-------------
+
+
+### Geom_point with colour gradient
+
+The original df is available [here](https://docs.google.com/document/d/1o6cPIE2t86Xo1r-eoeA0cpXvBODZHOEMgsPVfiTQ5d4/edit?usp=sharing)
+
+```{r}
+
+plot <- df %>%
+  mutate(destino = gsub("IF FLUMINENSE", "IF-FLUMINENSE", destino),
+         sigla= gsub(" .*", "", destino),
+         tempo_resposta = as.numeric(tempo_resposta)) %>%
+  ggplot(aes(num_pedidos, tempo_resposta, label=sigla, colour = tempo_resposta)) +
+  geom_point(size = 1.5) +
+  scale_colour_gradient(low = "#6ec3ff", high = "#ff0000") +
+  scale_y_continuous(breaks=c(0, 20, 30, 40, 50, 60, 70, 80)) +
+  labs(y="Tempo médio de resposta (dias)", 
+       x="Pedidos recebidos", 
+       title="Tempo de resposta por pedidos recebidos",
+       colour = NULL) +
+  theme(legend.position = "bottom",
+        legend.box = "vertical") +
+  geom_hline(yintercept = 20, color="grey", linetype="dashed")
+  
+plot + 
+  geom_smooth(method="lm", se=F) +
+  geom_label_repel(aes(label = ifelse(num_pedidos>300 | tempo_resposta > 20 ,
+                                      as.character(sigla),'')),
+                   box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +
+  theme_classic()
+  
+  ```
+  
+  ####Result:
+  
+  ![alt text](https://github.com/voigtjessica/tutoriais/blob/master/files/tempo%20por%20quantidade%20de%20pedido.png?raw=true)
